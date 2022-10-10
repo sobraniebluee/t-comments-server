@@ -17,7 +17,7 @@ def get_comments_for_post(id_post):
 @comment.route('/<id_post>', methods=['POST'])
 @jwt_required()
 @use_kwargs(CommentRequest)
-@marshal_with(CommentResponse)
+@marshal_with(CommentResponse(many=True))
 def create_comment_for_post(id_post, **kwargs):
     identity = get_jwt_identity()
     return CommentService.create_one(id_post=id_post, id_user=identity, **kwargs)

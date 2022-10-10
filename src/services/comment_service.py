@@ -3,12 +3,13 @@ from src.models.post_model import Post
 from src.middlewares.Errors import Errors
 from src.schemas.comments_schema import CommentResponse
 from marshmallow import Schema
+from sqlalchemy import desc
 
 
 class CommentService:
     @classmethod
     def get_all(cls, id_post):
-        comments = Comment.query.filter(Comment.id_post == id_post, Comment.is_reply == False).all()
+        comments = Comment.query.filter(Comment.id_post == id_post, Comment.is_reply == False).order_by(desc(Comment.created_at)).all()
         return comments, 200
 
     @classmethod
@@ -27,7 +28,7 @@ class CommentService:
                           text=text,
                           is_reply=is_reply)
         comment.save()
-        return comment, 200
+        return cls.get_all(id_post)
 
     @classmethod
     def delete_one(cls, id_comment):

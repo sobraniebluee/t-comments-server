@@ -9,11 +9,15 @@ def auth_required(optional=False, refresh=False):
     """
     def decorate(func):
         def args_decorate(*args, **kwargs):
-            try:
+            if optional:
+                try:
+                    verify_jwt_in_request(optional=optional, refresh=refresh)
+                    identity = get_jwt_identity()
+                except Exception as e:
+                    identity = None
+            else:
                 verify_jwt_in_request(optional=optional, refresh=refresh)
                 identity = get_jwt_identity()
-            except Exception as e:
-                identity = None
 
             result = func(identity=identity, *args, **kwargs)
             return result

@@ -14,13 +14,12 @@ posts = Blueprint('posts', __name__)
 
 
 @posts.route('', methods=['GET'])
-@cache.cached(timeout=10, key_prefix="get_all_posts")
+# @cache.cached(timeout=10, key_prefix="get_all_posts")
 @use_kwargs(ArgsPagination, location='query')
 @marshal_with(ResponseAllPostsSchema)
 @pagination(_limit=24)
 @auth_required(optional=True)
 def get_posts(identity):
-    print(identity)
     return PostService.get_all(identity)
 
 

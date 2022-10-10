@@ -13,12 +13,6 @@ user = Blueprint('user', __name__)
 @marshal_with(ResponseAuthSchema)
 def user_login(**kwargs):
     return UserService.login(**kwargs)
-# def user_login(**kwargs):
-#     response, status_code = UserService.login(**kwargs)
-#     schema = ResponseAuthSchema()
-#     result = make_response(schema.dump(response), status_code)
-#     result.set_cookie('access_token', response['jwt'].access_token)
-#     return result
 
 
 @user.route('/register', methods=['POST'])
